@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI算力竞技场
 
-## Getting Started
+本项目基于 Next.js 15 + shadcn/ui + Tailwind CSS，聚焦多模态推理、芯片/模型对比、参数配置与智能助手体验，适合本地开发和二次扩展。
 
-First, run the development server:
+## 环境要求
+- Node.js 18.x 或 20.x（建议与团队统一版本）
+- 推荐使用 npm、yarn 或 pnpm
 
+## 安装依赖
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+# 或
+# yarn
+# 或
+# pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 启动开发环境
+```bash
+npm run dev
+# 或
+yarn dev
+# 或
+pnpm dev
+```
+默认访问：http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 技术栈
+- Next.js 15
+- shadcn/ui（Radix UI 封装）
+- Tailwind CSS
+- lucide-react（图标）
+- next-themes（深色模式）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 主要功能
+- 芯片/模型多选与对比
+- 推理参数配置化
+- 多模态输入（文本+图片）
+- 推理结果卡片与雷达图
+- 智能助手悬浮入口
+- 深色/浅色自适应
 
-## Learn More
+## 常见问题
+- **依赖未装全？** 运行 `npm install` 即可。
+- **端口被占用？** 修改 `package.json` 里的 `dev` 脚本或本地端口。
+- **环境变量？** 如需对接后端API，请联系项目负责人获取 `.env` 文件。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 其他
+如遇到本地无法启动、依赖冲突等问题，请及时在群内反馈或联系项目维护人。
