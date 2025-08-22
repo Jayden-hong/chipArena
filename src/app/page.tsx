@@ -105,11 +105,17 @@ const searchModels = [
   { id: "openai", name: "OpenAI", icon: <ChipIcon /> }
 ];
 
-// 进度条（蓝色）
+// 优化后的进度条（现代化设计）
 function ProgressBar({ percent }: { percent: number }) {
   return (
-    <div className="w-24 h-3 bg-gray-200 rounded overflow-hidden">
-      <div className="bg-blue-400 h-3 rounded" style={{ width: `${percent}%` }} />
+    <div className="w-24 h-2 bg-gray-100 dark:bg-zinc-700 rounded-full overflow-hidden relative">
+      <div 
+        className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out relative"
+        style={{ width: `${percent}%` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full"></div>
     </div>
   );
 }
@@ -513,8 +519,8 @@ export default function ChipExperiencePage() {
   // 1. 结果卡片参数区去掉能耗字段
   const radarIndicators = [
     { key: 'latency', label: '推理速度', reverse: true, unit: 's' },
-    { key: 'throughput', label: '每秒吞吐量', unit: 'Token/s' },
-    { key: 'cost', label: '单位推理成本', reverse: true, unit: '¥' },
+    { key: 'throughput', label: '每秒tokens', unit: 'tokens/s' },
+    { key: 'cost', label: '预估成本', reverse: true, unit: '¥' },
     { key: 'efficiency', label: '能效比(TFLOPS/W)', unit: 'TFLOPS/W（FP16）' },
     { key: 'ecoScore', label: '生态兼容性', unit: '' },
   ];
@@ -748,67 +754,7 @@ export default function ChipExperiencePage() {
                 </div>
               </SpotlightCard>
             </div>
-            {/* 1. 芯片参数对比区（只展示参数） */}
-            {selectedChips.length > 0 && (
-              <div className="mb-2">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">{UI_TEXT.chipCompare}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-300">{UI_TEXT.chipCompareDesc}</p>
-              </div>
-            )}
-            {selectedChips.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full mb-10">
-                {selectedChips.slice(0, 4).map((chipKey, idx) => {
-                  const chip = chipOptions.find(c => c.value === chipKey);
-                  const params = chipParams[chipKey];
-                  if (!chip) return null;
-            return (
-                    <TiltedCard
-                      key={chipKey}
-                      imageSrc={chip.icon ? undefined : "/logo-default.svg"}
-                      containerHeight="240px"
-                      containerWidth="100%"
-                      className="bg-white dark:bg-zinc-900 text-gray-900 dark:text-white rounded-3xl shadow-xl border border-gray-100 dark:border-zinc-800 p-8 flex flex-col justify-between"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        {chip.icon}
-                        <span className="font-bold text-lg text-blue-700 dark:text-blue-300">{chip.label}</span>
-                        {chip.vendor && (
-                          <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-200 border border-blue-200 dark:border-blue-800 align-middle">{chip.vendor}</span>
-                        )}
-                      </div>
-                      <div className="flex justify-between mb-2">
-                        <div className="flex flex-col items-center flex-1">
-                          <span className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">显存容量</span>
-                          <span className="text-2xl font-extrabold text-blue-400 dark:text-blue-200">{params.memory}<span className="text-xs ml-1">GB</span></span>
-                        </div>
-                        <div className="flex flex-col items-center flex-1">
-                          <span className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">显存带宽</span>
-                          <span className="text-2xl font-extrabold text-blue-400 dark:text-blue-200">{params.bandwidth}<span className="text-xs ml-1">GB/s</span></span>
-                        </div>
-                        <div className="flex flex-col items-center flex-1">
-                          <span className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">通信带宽</span>
-                          <span className="text-2xl font-extrabold text-blue-400 dark:text-blue-200">{params.comm}<span className="text-xs ml-1">GB/s</span></span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between mb-3">
-                        <div className="flex flex-col items-center flex-1">
-                          <span className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">最大功耗</span>
-                          <span className="text-lg font-bold text-blue-500 dark:text-blue-300">{params.maxPower}<span className="text-xs ml-1">W</span></span>
-                        </div>
-                        <div className="flex flex-col items-center flex-1">
-                          <span className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">能效比（TFLOPS/W）</span>
-                          <span className="text-lg font-bold text-blue-500 dark:text-blue-300">{params.efficiency}<span className="text-xs ml-1">TFLOPS/W</span></span>
-                        </div>
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-2 min-h-[28px]">{chip.desc}</div>
-                      <div className="flex justify-end">
-                        <a href={chip.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 dark:text-blue-300 hover:underline font-medium">了解更多</a>
-                      </div>
-                    </TiltedCard>
-                  );
-                })}
-              </div>
-            )}
+
             {/* 推理体验区块标题和文案 */}
             <div className="mb-2 mt-2">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">{UI_TEXT.modelExperience}</h2>
@@ -1198,7 +1144,7 @@ export default function ChipExperiencePage() {
                       </div>
                               {/* 吞吐量 */}
                               <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-400">吞吐量<span className="ml-1 text-xs text-gray-300">Token/s</span></span>
+                                <span className="text-xs text-gray-400">每秒tokens</span>
                                 <span className={`text-xl font-bold tabular-nums relative ${isMultiChip && avg.throughput === bestValues.throughput ? 'text-green-500' : 'text-blue-400 dark:text-blue-300'}`}>{avg.throughput}{isMultiChip && avg.throughput === bestValues.throughput && <Trophy size={14} className="inline-block ml-1 text-amber-400 align-text-top" />}</span>
                               </div>
                               {/* GPU占用 */}
@@ -1208,7 +1154,7 @@ export default function ChipExperiencePage() {
                               </div>
                               {/* 成本 */}
                               <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-400">成本<span className="ml-1 text-xs text-gray-300">¥</span></span>
+                                <span className="text-xs text-gray-400">预估成本<span className="ml-1 text-xs text-gray-300">¥</span></span>
                                 <span className={`text-xl font-bold tabular-nums relative ${isMultiChip && avg.cost === bestValues.cost ? 'text-green-500' : 'text-blue-400 dark:text-blue-300'}`}>{avg.cost}{isMultiChip && avg.cost === bestValues.cost && <Trophy size={14} className="inline-block ml-1 text-amber-400 align-text-top" />}</span>
                               </div>
                             </div>
@@ -1298,24 +1244,7 @@ export default function ChipExperiencePage() {
                 </ResponsiveContainer>
               </div>
             )}
-            {/* 1. 移除Tabs，仅保留主流程 */}
-            {/* 2. 输入区上方：已选择芯片消息卡片 */}
-            {selectedChips.length > 0 && (
-              <div className="mb-4">
-                <div className="bg-blue-50 border border-blue-200 text-blue-700 rounded-xl px-4 py-2 text-sm font-medium flex items-center gap-2 dark:bg-blue-900 dark:border-blue-800 dark:text-blue-300">
-                  <span>{UI_TEXT.selectedChips}:</span>
-                  {selectedChips.map(chipKey => {
-                    const chip = chipOptions.find(c => c.value === chipKey);
-                    return (
-                      <span key={chipKey} className="flex items-center gap-1 px-2 py-1 bg-blue-100 border border-blue-200 rounded-xl text-blue-700 text-sm font-medium">
-                        <ChipIcon />
-                        {chip?.label}
-                      </span>
-            );
-          })}
-        </div>
-      </div>
-            )}
+
           </div>
         </div>
       </div>
